@@ -11,6 +11,7 @@ PygmentsCodeFences: true
 googleAnalytics: ""      # UA-XXXXXXXX-X 
 # permalinks:
 #   posts: /:year/:month/:filename/
+publishDir: docs
 
 taxonomies:
     category : categories
