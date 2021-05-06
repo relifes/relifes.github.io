@@ -1,4 +1,4 @@
-baseURL: https://relifes.github.io/
+baseURL: https://relifes.github.io
 theme: pure
 title: Minghan Lu
 copyright: CC BY 4.0 CN
@@ -138,11 +138,11 @@ params:
     type:  gitalk # type disqus/gitalk/valine 启用哪种评论系统
     disqus: your_disqus_name # enter disqus shortname here
     gitalk: # gitalk. https://gitalk.github.io/
-      owner: 'relifes' #必须. GitHub repository 所有者，可以是个人或者组织。
-      admin: 'relifes' #必须. GitHub repository 的所有者和合作者 (对这个 repository 有写权限的用户)。
+      owner: relifes #必须. GitHub repository 所有者，可以是个人或者组织。
+      admin: relifes #必须. GitHub repository 的所有者和合作者 (对这个 repository 有写权限的用户)。
       repo:  relifes.github.io #必须. GitHub repository.
-      ClientID: 75dc1f8401d5b59d986e #必须. GitHub Application Client ID.
-      ClientSecret: 67c9ae0f050b537c94e9c6cba47b9b5d0b155a37 #必须. GitHub Application Client Secret.
+      ClientID: b0f49c89a8db3adddd27 #必须. GitHub Application Client ID.
+      ClientSecret: f1c0d0bf1f10c09636714020fea98ffc40af87f5 #必须. GitHub Application Client Secret.
     valine: # Valine. https://valine.js.org
       appid: # your leancloud application appid
       appkey: # your leancloud application appkey
