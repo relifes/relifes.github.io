@@ -27,8 +27,7 @@
     
     <link rel="stylesheet" href="https://relifes.github.io/css/style.min.a107018c152594e2f5a5ae9cfe28542e6e72a3b1211062f313aadd4536b2c38e.css">
     
-    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
     <meta property="og:title" content="Posts" />
 <meta property="og:description" content="" />
@@ -266,8 +265,8 @@
                 TAGS: '标签',
                 UNTITLED: '(未命名)',
             },
-            ROOT_URL: 'https:\/\/relifes.github.io',
-            CONTENT_URL: 'https:\/\/relifes.github.io\/searchindex.json ',
+            ROOT_URL: 'https:\/\/relifes.github.io\/',
+            CONTENT_URL: 'https:\/\/relifes.github.io\/\/searchindex.json ',
         };
         window.INSIGHT_CONFIG = INSIGHT_CONFIG;
     })(window);
@@ -287,21 +286,6 @@
     });
 </script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
-<script type="text/javascript">
-    var gitalk = new Gitalk({
-        clientID: 'b0f49c89a8db3adddd27',
-        clientSecret: 'f1c0d0bf1f10c09636714020fea98ffc40af87f5',
-        repo: 'relifes.github.io',
-        owner: 'relifes',
-        admin: ['relifes'],
-        id: md5(location.pathname),
-        distractionFreeMode: true
-    });
-    gitalk.render('comments');
-</script>
 
   </body>
 </html>

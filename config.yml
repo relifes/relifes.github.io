@@ -1,4 +1,4 @@
-baseURL: https://relifes.github.io
+baseURL: https://relifes.github.io/
 theme: pure
 title: Minghan Lu
 copyright: CC BY 4.0 CN
@@ -135,7 +135,7 @@ params:
 
   # Comment
   comment:
-    type:  gitalk # type disqus/gitalk/valine 启用哪种评论系统
+    type:  # type disqus/gitalk/valine 启用哪种评论系统
     disqus: your_disqus_name # enter disqus shortname here
     gitalk: # gitalk. https://gitalk.github.io/
       owner: relifes #必须. GitHub repository 所有者，可以是个人或者组织。
