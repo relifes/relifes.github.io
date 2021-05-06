@@ -11,12 +11,12 @@
     
     
     <item>
-      <title>RecData</title>
+      <title> 推荐系统的数据部分</title>
       <link>https://relifes.github.io/posts/recsys/recdata/</link>
       <pubDate>Mon, 19 Apr 2021 10:54:16 +0800</pubDate>
       
       <guid>https://relifes.github.io/posts/recsys/recdata/</guid>
-      <description>Hello</description>
+      <description>推荐系统的“数据部分”主要负责的是“用户”“物品”“场景”信息的收集与处理。 根据处理数据量和处理实时性的不同，我们会用到三种不同的数据处理方</description>
     </item>
     
     <item>

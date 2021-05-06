@@ -2,7 +2,7 @@
 <html lang="zh">
   <head>
     <title>
-        RecData - Minghan Lu
+         推荐系统的数据部分 - Minghan Lu
       </title>
         <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -23,26 +23,27 @@
     <meta name="keywords"
       content="RecSys, Data" /><meta name="description" content="推荐系统的数据处理" />
     <meta name="generator" content="Hugo 0.82.0 with theme pure" />
-    <title>RecData - Minghan Lu</title>
+    <title> 推荐系统的数据部分 - Minghan Lu</title>
     
     
     <link rel="stylesheet" href="https://relifes.github.io/css/style.min.a107018c152594e2f5a5ae9cfe28542e6e72a3b1211062f313aadd4536b2c38e.css">
     
-    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.15.10/styles/github.min.css" async> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" async>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css" async>
-    <meta property="og:title" content="RecData" />
+    <meta property="og:title" content=" 推荐系统的数据部分" />
 <meta property="og:description" content="推荐系统的数据处理" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://relifes.github.io/posts/recsys/recdata/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-04-19T10:54:16&#43;08:00" />
 <meta property="article:modified_time" content="2021-04-19T10:54:16&#43;08:00" />
 
-<meta itemprop="name" content="RecData">
+<meta itemprop="name" content=" 推荐系统的数据部分">
 <meta itemprop="description" content="推荐系统的数据处理"><meta itemprop="datePublished" content="2021-04-19T10:54:16&#43;08:00" />
 <meta itemprop="dateModified" content="2021-04-19T10:54:16&#43;08:00" />
-<meta itemprop="wordCount" content="1">
+<meta itemprop="wordCount" content="691">
 <meta itemprop="keywords" content="RecSys," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="RecData"/>
+<meta name="twitter:title" content=" 推荐系统的数据部分"/>
 <meta name="twitter:description" content="推荐系统的数据处理"/>
 
     <!--[if lte IE 9]>
@@ -202,7 +203,7 @@
   <a
     class="article-title"
     href="/posts/recsys/recdata/"
-    >RecData</a
+    > 推荐系统的数据部分</a
   >
 </h1>
 
@@ -223,12 +224,32 @@
     <a class="article-tag-link" href="/tags/recsys/"> RecSys </a>
   </span>
 
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1字</span>
-		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1分 </span>
+        <span class="post-comment"><i class="icon icon-comment"></i>&nbsp;<a href="/posts/recsys/recdata/#comments"
+            class="article-comment-link">评论</a></span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 691字</span>
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2分 </span>
       </div>
     </div>
     <div class="article-entry marked-body js-toc-content" itemprop="articleBody">
-      <h2 id="hello">Hello</h2>
+      <blockquote>
+<p>推荐系统的“数据部分”主要负责的是“用户”“物品”“场景”信息的收集与处理。</p>
+</blockquote>
+
+<p>根据处理数据量和处理实时性的不同，我们会用到三种不同的数据处理方式，按照实时性的强弱排序的话，它们依次是客户端与服务器端实时数据处理、流处理平台准实时数据处理、大数据平台离线数据处理。在实时性由强到弱递减的同时，三种平台的海量数据处理能力则由弱到强。</p>
+
+<p>因此，一个成熟推荐系统的数据流系统会将三者取长补短，配合使用。我们也会在今后的课程中讲到具体的例子，比如使用 Spark 进行离线数据处理，使用 Flink 进行准实时数据处理等等。大数据计算平台通过对推荐系统日志，物品和用户的元数据等信息的处理，获得了推荐模型的训练数据、特征数据、统计数据等。</p>
+
+<p>那这些数据都有什么用呢？</p>
+
+<p>具体说来，大数据平台加工后的数据出口主要有 3 个：</p>
+
+<ol>
+<li>生成推荐系统模型所需的样本数据，用于算法模型的训练和评估。</li>
+<li>生成推荐系统模型服务（Model Serving）所需的“用户特征”，“物品特征”和一部分“场景特征”，用于推荐系统的线上推断。</li>
+<li>生成系统监控、商业智能（Business Intelligence，BI）系统所需的统计型数据。</li>
+</ol>
+
+<p>可以说，推荐系统的数据部分是整个推荐系统的“水源”，我们只有保证“水源”的持续、纯净，才能不断地“滋养”推荐系统，使其高效地运转并准确地输出。在深度学习时代，深度学习模型对于“水源”的要求更高了，首先是水量要大，只有这样才能保证我们训练出的深度学习模型能够尽快收敛；其次是“水流”要快，让数据能够尽快地流到模型更新训练的模块，这样才能够让模型实时的抓住用户兴趣变化的趋势，这就推动了大数据引擎 Spark，以及流计算平台 Flink 的发展和应用。</p>
 
     </div>
     <div class="article-footer">
@@ -236,7 +257,7 @@
   <ul class="post-copyright list-unstyled">
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接: </strong>
-      <a href="https://relifes.github.io/posts/recsys/recdata/" title="RecData" target="_blank" rel="external">https://relifes.github.io/posts/recsys/recdata/</a>
+      <a href="https://relifes.github.io/posts/recsys/recdata/" title=" 推荐系统的数据部分" target="_blank" rel="external">https://relifes.github.io/posts/recsys/recdata/</a>
     </li>
     <li class="post-copyright-license">
       <strong>License: </strong>
@@ -263,6 +284,9 @@
 
     </div>
   </article>
+<section id="comments">
+</section>
+
 </div><nav class="bar bar-footer clearfix" data-stick-bottom>
     <div class="bar-inner">
         <ul class="pager pull-left">
@@ -365,6 +389,21 @@
     });
 </script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '75dc1f8401d5b59d986e',
+        clientSecret: '67c9ae0f050b537c94e9c6cba47b9b5d0b155a37',
+        repo: 'relifes.github.io',
+        owner: 'relifes',
+        admin: ['relifes'],
+        id: md5(location.pathname),
+        distractionFreeMode: true
+    });
+    gitalk.render('comments');
+</script>
 
   </body>
 </html>
