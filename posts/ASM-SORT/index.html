@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7Cjetbrains+mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" integrity="sha256-jTIdiMuX/e3DGJUGwl3pKSxuc6YOuqtJYkM0bGQESA4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"relifes.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":13},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="题目描述  在键盘输入任意10个数  按从小到大排序后，在计算机屏幕上先输出来。要有结果提示（字符串显示）。 将10个数做累加，结果在计算机屏幕显示累加和。    伪指令的定义 数据段 DATAS SEGMENT    string_1 DB &amp;#x27;Please input a numbers(0-65536):&amp;#x27;,&amp;#x27;$&amp;#x27;    string_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编排序">
+<meta property="og:url" content="https://relifes.github.io/posts/ASM-SORT/index.html">
+<meta property="og:site_name" content="Relifes&#39;s Blog">
+<meta property="og:description" content="题目描述  在键盘输入任意10个数  按从小到大排序后，在计算机屏幕上先输出来。要有结果提示（字符串显示）。 将10个数做累加，结果在计算机屏幕显示累加和。    伪指令的定义 数据段 DATAS SEGMENT    string_1 DB &amp;#x27;Please input a numbers(0-65536):&amp;#x27;,&amp;#x27;$&amp;#x27;    string_">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-03-05T08:41:59.000Z">
+<meta property="article:modified_time" content="2022-03-05T10:14:14.818Z">
+<meta property="article:author" content="鲁明翰">
+<meta property="article:tag" content="汇编">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://relifes.github.io/posts/ASM-SORT/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://relifes.github.io/posts/ASM-SORT/","path":"/posts/ASM-SORT/","title":"汇编排序"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>汇编排序 | Relifes's Blog</title>
+  
+
+
+
+
+<link rel="dns-prefetch" href="waline-server-bice.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Relifes's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">临渊羡鱼，不如退而结网</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E6%8C%87%E4%BB%A4%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">伪指令的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%AE%B5"><span class="nav-number">2.1.</span> <span class="nav-text">数据段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E6%A0%88%E6%AE%B5"><span class="nav-number">2.2.</span> <span class="nav-text">堆栈段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%AE%B5"><span class="nav-number">2.3.</span> <span class="nav-text">代码段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%88%86%E8%A7%A3%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">模块分解与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dos%E8%BE%93%E5%85%A510%E4%B8%AA%E6%95%B0%E5%AD%97"><span class="nav-number">3.1.</span> <span class="nav-text">DOS输入10个数字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E5%87%BD%E6%95%B0%E5%AD%90%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">输入函数子程序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-number">3.2.</span> <span class="nav-text">实现冒泡排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dos%E8%BE%93%E5%87%BA%E5%88%B0%E5%B1%8F%E5%B9%95"><span class="nav-number">3.3.</span> <span class="nav-text">DOS输出到屏幕</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%82%E7%B4%AF%E5%8A%A0%E5%92%8C"><span class="nav-number">3.4.</span> <span class="nav-text">求累加和</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="nav-number">3.5.</span> <span class="nav-text">其他函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">流程图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#input"><span class="nav-number">4.0.1.</span> <span class="nav-text">Input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#print"><span class="nav-number">4.0.2.</span> <span class="nav-text">Print</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bubble_sort"><span class="nav-number">4.0.3.</span> <span class="nav-text">Bubble_Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get_sum"><span class="nav-number">4.0.4.</span> <span class="nav-text">Get_Sum</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%88%AA%E5%9B%BE"><span class="nav-number">5.</span> <span class="nav-text">代码与运行截图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%89%88%E4%BB%A3%E7%A0%81%E5%9C%A8masm%E8%BF%90%E8%A1%8C%E9%80%9A%E8%BF%87"><span class="nav-number">5.1.</span> <span class="nav-text">完整版代码（在MASM运行通过）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E8%BF%90%E8%A1%8C%E6%97%B6%E6%88%AA%E5%9B%BE"><span class="nav-number">5.2.</span> <span class="nav-text">正确运行时截图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E8%BE%93%E5%85%A5%E6%97%B6%E6%88%AA%E5%9B%BE"><span class="nav-number">5.3.</span> <span class="nav-text">错误输入时截图</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="鲁明翰"
+      src="/images/1.jpg">
+  <p class="site-author-name" itemprop="name">鲁明翰</p>
+  <div class="site-description" itemprop="description">Relifes's Blog, Relifes的博客, Relifes的日志</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/relifes" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;relifes" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hrbust.lmh@gmail.com" title="E-Mail → mailto:hrbust.lmh@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/relifes" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://relifes.github.io/posts/ASM-SORT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="鲁明翰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Relifes's Blog">
+      <meta itemprop="description" content="Relifes's Blog, Relifes的博客, Relifes的日志">
+    </span>
+    
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="汇编排序 | Relifes's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          汇编排序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-03-05 16:41:59 / 修改时间：18:14:14" itemprop="dateCreated datePublished" datetime="2022-03-05T16:41:59+08:00">2022-03-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/posts/ASM-SORT/#waline-comments" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" id="/posts/ASM-SORT/" data-xid="/posts/ASM-SORT/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="题目描述">题目描述</h2>
+<blockquote class="blockquote-center">
+<p><strong>在键盘输入任意10个数</strong></p>
+<ol type="1">
+<li><strong>按从小到大排序后，在计算机屏幕上先输出来。要有结果提示（字符串显示）。</strong></li>
+<li><strong>将10个数做累加，结果在计算机屏幕显示累加和。</strong></li>
+</ol>
+
+</blockquote>
+<h2 id="伪指令的定义">伪指令的定义</h2>
+<h3 id="数据段">数据段</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">DATAS SEGMENT</span><br><span class="line">    string_1 DB <span class="string">&#x27;Please input a numbers(0-65536):&#x27;</span>,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_2 DB <span class="string">&#x27;ERROR: OVERFLOW! Please input again:&#x27;</span>,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_3 DB <span class="string">&#x27;The array you have input is:&#x27;</span>,<span class="number">0</span>ah,<span class="number">0</span>dh,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_4 DB <span class="string">&#x27;After Sort the num is:&#x27;</span>,<span class="number">0</span>ah,<span class="number">0</span>dh,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_5 DB <span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    DATA  DW <span class="number">10</span> DUP(?)  </span><br><span class="line">    massege  DB <span class="string">&#x27;The sum of the array is: &#x27;</span>,<span class="number">0</span>ah,<span class="number">0</span>DH,<span class="string">&#x27;$&#x27;</span>   </span><br><span class="line">DATAS ENDS</span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong>：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">string_1</th>
+<th style="text-align: center;">输入范围提示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>string_2</strong></td>
+<td style="text-align: center;"><strong>输入错误提示</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>string_3</strong></td>
+<td style="text-align: center;"><strong>输出原数组提示</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>string_4</strong></td>
+<td style="text-align: center;"><strong>输出排序后数组提示</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>string_5</strong></td>
+<td style="text-align: center;"><strong>空格符</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>DATA</strong></td>
+<td style="text-align: center;"><strong>缓冲区数组</strong></td>
+</tr>
+</tbody>
+</table>
+<span id="more"></span>
+<h3 id="堆栈段">堆栈段</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">STACKS SEGMENT</span><br><span class="line">    DW <span class="number">256</span> dup(?)</span><br><span class="line">STACKS ENDS</span><br></pre></td></tr></table></figure>
+<h3 id="代码段">代码段</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">CODES SEGMENT</span><br><span class="line">    ASSUME CS:CODES,DS:DATAS,SS:STACKS</span><br></pre></td></tr></table></figure>
+<h2 id="模块分解与实现">模块分解与实现</h2>
+<h3 id="dos输入10个数字">DOS输入10个数字</h3>
+<ul>
+<li>输入10个无符号数存入缓冲区，并且保证 <span class="math inline">\(num
+&lt; 65536\)</span></li>
+</ul>
+<p>为何输入范围是65536呢 一个字的最大表示范围是 <span
+class="math inline">\(FFFF\)</span> 其在十进制的表示下为 65535</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">HEX</th>
+<th style="text-align: center;">FFFF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">DEC</td>
+<td style="text-align: center;">65535</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">BIN</td>
+<td style="text-align: center;">1111 1111 1111 1111</td>
+</tr>
+</tbody>
+</table>
+<h4 id="输入函数子程序">输入函数子程序</h4>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">;---------输入函数（单数字输入）------------</span><br><span class="line">Input PROC Near</span><br><span class="line">    push AX</span><br><span class="line">    push BX</span><br><span class="line">    push CX</span><br><span class="line">    push DX</span><br><span class="line">;---------输入提示--------------</span><br><span class="line"></span><br><span class="line">    MOV BX, <span class="number">0</span></span><br><span class="line">    CLC</span><br><span class="line">    MOV DX, <span class="number">0</span></span><br><span class="line">;----------输入数字--------------</span><br><span class="line">    Lp_0:</span><br><span class="line">        MOV AH, <span class="number">1</span></span><br><span class="line">        INT <span class="number">21</span>H</span><br><span class="line">        CMP AL, <span class="number">20</span>H ;回车</span><br><span class="line">        JE L_CRLF</span><br><span class="line"></span><br><span class="line">;-----   x belong to [<span class="number">0</span>,<span class="number">9</span>]   ----------        </span><br><span class="line">        SUB AL, <span class="number">30</span>H ; ASCII -&gt; <span class="type">int</span></span><br><span class="line">        JL L_ERROR  </span><br><span class="line">        CMP AL, <span class="number">9</span></span><br><span class="line">        JG L_ERROR</span><br><span class="line">;-------  <span class="built_in">string</span> -&gt; <span class="type">int</span>   -----------</span><br><span class="line">        MOV AH, <span class="number">0</span>   ;将 AL扩展成 AX</span><br><span class="line">        XCHG AX, BX ;保护 AX值</span><br><span class="line">        MOV CX, <span class="number">10</span></span><br><span class="line">        MUL CX      ; bx *= <span class="number">10</span></span><br><span class="line">        ADD AX , BX</span><br><span class="line">        JC L_ERROR  ; OVERFLOW处理</span><br><span class="line">        XCHG AX, BX </span><br><span class="line">        JMP Lp_0</span><br><span class="line">    L_ERROR:</span><br><span class="line">        MOV DX, <span class="number">0</span></span><br><span class="line">        MOV BX, <span class="number">0</span></span><br><span class="line">        CALL CRLF   ; 换行        </span><br><span class="line">        CALL ERROR  ; 输出错误提示</span><br><span class="line">        JMP Lp_0</span><br><span class="line">    L_CRLF:         ; 以换行作为一个数的结束标志</span><br><span class="line">        MOV DX, <span class="number">0</span></span><br><span class="line">        MOV DATA[SI], BX ;</span><br><span class="line">        POP DX</span><br><span class="line">        POP CX</span><br><span class="line">        POP BX</span><br><span class="line">        POP AX</span><br><span class="line">        RET</span><br><span class="line">        Input ENDP</span><br></pre></td></tr></table></figure>
+<p>解析函数功能：</p>
+<ol type="1">
+<li><p>本质类似于高精度计算，将读入的一个串转成数字存储在DATA数组中</p></li>
+<li><p>分成三大部分</p>
+<p>一： 输入提示</p>
+<p>二： 错误判断及提示</p>
+<p>三： 转化为数字</p></li>
+<li><p>L_ERROR 错误处理</p></li>
+<li><p>L_CRLF 结束处理</p></li>
+</ol>
+<blockquote>
+<p>我们来举一个<span class="math inline">\(1234\)</span> 的例子</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Register</th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">3</th>
+<th style="text-align: center;">4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>AX</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>BX</strong></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">123</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>CX</strong></td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">10</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(AX + (BX * CX)\)</span></p>
+</blockquote>
+<p>最后将结果存储在DATA数组里</p>
+<h3 id="实现冒泡排序">实现冒泡排序</h3>
+<p>冒泡排序作为一个简单的排序算法，时间复杂度 <span
+class="math inline">\(O(n^2)\)</span>
+需要两层循环，为了提高代码的可读性，我们将内层的循环写成一个子程序每次调用</p>
+<p>内层循环很简单，每次从头比到尾，遇到比它小的交换就可以了。因为是字操作数，所以循环的下标到18为结束条件。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">;---------Bubble_sort--------------------</span><br><span class="line">Bubble_sort PROC NEAR</span><br><span class="line">    PUSH BX</span><br><span class="line">    PUSH DX</span><br><span class="line">    MOV  SI,DI</span><br><span class="line">LOOP1:</span><br><span class="line">    ADD  SI,<span class="number">2</span>  </span><br><span class="line">    MOV  BX,DATA[DI]</span><br><span class="line">    CMP  BX,DATA[SI]</span><br><span class="line">    JA   SWAP</span><br><span class="line">    JMP  NEXT</span><br><span class="line">SWAP:    </span><br><span class="line">    MOV  DX,DATA[SI]</span><br><span class="line">    MOV  DATA[DI],DX</span><br><span class="line">    MOV  DATA[SI],BX </span><br><span class="line">NEXT:</span><br><span class="line">    CMP SI,<span class="number">18</span></span><br><span class="line">    JL   LOOP1</span><br><span class="line">    POP  DX</span><br><span class="line">    POP  BX</span><br><span class="line">    RET</span><br><span class="line">    Bubble_sort ENDP </span><br></pre></td></tr></table></figure>
+<p>外层调用：每次<span class="math inline">\(DI + 2\)</span></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">;----------Sort-----------</span><br><span class="line">    MOV CX, <span class="number">9</span></span><br><span class="line">    MOV DI, <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">FOR1:</span><br><span class="line">    CALL Bubble_sort</span><br><span class="line">    ADD DI, <span class="number">2</span></span><br><span class="line">    LOOP FOR1</span><br></pre></td></tr></table></figure>
+<h3 id="dos输出到屏幕">DOS输出到屏幕</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">    CALL CRLF</span><br><span class="line">    MOV DX, OFFSET string_4 ;<span class="string">&#x27;After Sort the num is:&#x27;</span></span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line"></span><br><span class="line">    MOV CX, <span class="number">10</span></span><br><span class="line">    MOV DI, <span class="number">0</span></span><br><span class="line">FOR2:</span><br><span class="line">    CALL Print</span><br><span class="line">    CALL Space</span><br><span class="line">    ADD DI , <span class="number">2</span></span><br><span class="line">    LOOP FOR2</span><br><span class="line">    CALL CRLF</span><br></pre></td></tr></table></figure>
+<p>输出DATA内的数字，每次输出一个数字然后在输出一个空格</p>
+<blockquote>
+<p>Print函数:</p>
+<ol type="1">
+<li>利用DIV函数的特点——每次除10的商放在AX， 余数放入DX</li>
+<li>并利用栈的 FILO（First in Last Out）的特点</li>
+</ol>
+<p>依旧以1234的例子来看一下是怎么处理的</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">DATA[Num]</th>
+<th style="text-align: center;">1234</th>
+<th style="text-align: center;">123</th>
+<th style="text-align: center;">12</th>
+<th style="text-align: center;">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>DX</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;"><strong>1</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Stack(PUSH DX)</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>4，3</strong></td>
+<td style="text-align: center;"><strong>4，3，2</strong></td>
+<td style="text-align: center;"><strong>4，3，2，1</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Print(POP DX)</strong></td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>34</strong></td>
+<td style="text-align: center;"><strong>234</strong></td>
+<td style="text-align: center;"><strong>1234</strong></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\cfrac{DATA[Num]} {10}\)</span>
+的余数存入DX</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">Print PROC Near</span><br><span class="line">    PUSH AX</span><br><span class="line">    PUSH BX</span><br><span class="line">	PUSH CX</span><br><span class="line">	PUSH DX </span><br><span class="line"></span><br><span class="line">    MOV CX, <span class="number">0</span></span><br><span class="line">    MOV BX, <span class="number">10</span></span><br><span class="line">    MOV AX, DATA[DI]</span><br><span class="line">    LAST:</span><br><span class="line">        MOV DX, <span class="number">0</span></span><br><span class="line">        DIV BX ; DIV商放AX，余数放入DX</span><br><span class="line">        PUSH DX</span><br><span class="line">        INC CX</span><br><span class="line">        CMP AX, <span class="number">0</span></span><br><span class="line">        JNZ LAST</span><br><span class="line">    AGE:</span><br><span class="line">        POP DX</span><br><span class="line">        OR DX, <span class="number">30</span>H</span><br><span class="line">        MOV AH, <span class="number">2</span></span><br><span class="line">        INT <span class="number">21</span>H</span><br><span class="line">        LOOP AGE</span><br><span class="line">        POP  DX</span><br><span class="line">        POP  CX</span><br><span class="line">	    POP  BX</span><br><span class="line">	    POP  AX</span><br><span class="line">	    RET</span><br><span class="line">        Print ENDP</span><br></pre></td></tr></table></figure>
+<h3 id="求累加和">求累加和</h3>
+<ul>
+<li>全部累加到<span class="math inline">\(DATA[0]\)</span> 上直接调用
+Print
+函数，因为Print函数是针对DATA数组设计的，所以把最后的结果存入DATA数组中不需要额外的输出函数。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">;-------SUM-------------</span><br><span class="line">Get_sum PROC NEAR</span><br><span class="line">    PUSH BX</span><br><span class="line">    PUSH CX</span><br><span class="line"></span><br><span class="line">    MOV BX, <span class="number">0</span></span><br><span class="line">    MOV CX , <span class="number">9</span></span><br><span class="line">    MOV DI, <span class="number">2</span></span><br><span class="line">LOP1:</span><br><span class="line">    MOV BX, DATA[<span class="number">0</span>]</span><br><span class="line">    ADD BX, DATA[DI]</span><br><span class="line">    MOV DATA[<span class="number">0</span>], BX</span><br><span class="line">    ADD DI , <span class="number">2</span></span><br><span class="line">    LOOP LOP1</span><br><span class="line">    POP CX</span><br><span class="line">    POP BX</span><br><span class="line">    RET</span><br><span class="line">    Get_sum ENDP</span><br></pre></td></tr></table></figure>
+<h3 id="其他函数">其他函数</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">;----换行子函数（一个数输入完毕）-------</span><br><span class="line">CRLF PROC Near</span><br><span class="line">    push AX</span><br><span class="line">    push DX</span><br><span class="line">    MOV DL, <span class="number">0</span>ah</span><br><span class="line">    MOV AH, <span class="number">2</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line">    pop DX</span><br><span class="line">    pop AX</span><br><span class="line">    RET</span><br><span class="line">    CRLF ENDP</span><br><span class="line">;---------空格-----------</span><br><span class="line">Space PROC Near</span><br><span class="line">    push AX</span><br><span class="line">    push DX</span><br><span class="line">    MOV DX, OFFSET string_5 ;<span class="string">&#x27; &#x27;</span></span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line">    pop DX</span><br><span class="line">    pop AX</span><br><span class="line">    RET </span><br><span class="line">    Space ENDP</span><br><span class="line">;----------错误提示-------------</span><br><span class="line">ERROR PROC Near</span><br><span class="line">    push BX</span><br><span class="line">    push DX</span><br><span class="line">    MOV DX, OFFSET string_2 ; ERROR: OVERFLOW! Please input again:</span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line">    pop DX</span><br><span class="line">    pop BX</span><br><span class="line">    RET</span><br><span class="line">    ERROR ENDP</span><br></pre></td></tr></table></figure>
+<h2 id="流程图">流程图</h2>
+<h4 id="input">Input</h4>
+<p><img
+src="https://gitee.com/relifes/image/raw/master/img/20220305181155.png" /></p>
+<h4 id="print">Print</h4>
+<figure>
+<img
+src="https://gitee.com/relifes/image/raw/master/img/20220305181223.png"
+alt="在这里插入图片描述" />
+<figcaption aria-hidden="true">在这里插入图片描述</figcaption>
+</figure>
+<h4 id="bubble_sort">Bubble_Sort</h4>
+<figure>
+<img
+src="https://gitee.com/relifes/image/raw/master/img/20220305181243.png"
+alt="在这里插入图片描述" />
+<figcaption aria-hidden="true">在这里插入图片描述</figcaption>
+</figure>
+<h4 id="get_sum">Get_Sum</h4>
+<figure>
+<img
+src="https://gitee.com/relifes/image/raw/master/img/20220305181258.png"
+alt="在这里插入图片描述" />
+<figcaption aria-hidden="true">在这里插入图片描述</figcaption>
+</figure>
+<h2 id="代码与运行截图">代码与运行截图</h2>
+<h3 id="完整版代码在masm运行通过">完整版代码（在MASM运行通过）</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">;-----数据段------------</span><br><span class="line">DATAS SEGMENT</span><br><span class="line">    string_1 DB <span class="string">&#x27;Please input 10 numbers(0-65536):&#x27;</span>,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_2 DB <span class="string">&#x27;ERROR: OVERFLOW! Please input again:&#x27;</span>,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_3 DB <span class="string">&#x27;The array you have input is:&#x27;</span>,<span class="number">0</span>ah,<span class="number">0</span>dh,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_4 DB <span class="string">&#x27;After Sort the num is:&#x27;</span>,<span class="number">0</span>ah,<span class="number">0</span>dh,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    string_5 DB <span class="string">&#x27; &#x27;</span>,<span class="string">&#x27;$&#x27;</span></span><br><span class="line">    DATA  DW <span class="number">10</span> DUP(?)  </span><br><span class="line">    massege  DB <span class="string">&#x27;The sum of the array is: &#x27;</span>,<span class="number">0</span>ah,<span class="number">0</span>DH,<span class="string">&#x27;$&#x27;</span>   </span><br><span class="line">DATAS ENDS</span><br><span class="line"></span><br><span class="line">;-----堆栈段------------</span><br><span class="line">STACKS SEGMENT</span><br><span class="line">    DW <span class="number">256</span> dup(?)</span><br><span class="line">STACKS ENDS</span><br><span class="line"></span><br><span class="line">;-----代码段------------</span><br><span class="line">CODES SEGMENT</span><br><span class="line">    ASSUME CS:CODES,DS:DATAS,SS:STACKS</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">;-----------程序开始------------</span><br><span class="line">START:</span><br><span class="line">    MOV AX,DATAS</span><br><span class="line">    MOV DS,AX</span><br><span class="line">    MOV SI, <span class="number">0</span>  ;指针初始化</span><br><span class="line">    MOV CX, <span class="number">10</span> ;循环次数</span><br><span class="line">;---------Input----------</span><br><span class="line">    MOV DX, OFFSET string_1 ;Please input <span class="number">10</span> numbers(<span class="number">0</span><span class="number">-65536</span>)</span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line">Lp:</span><br><span class="line">    CALL Input</span><br><span class="line">    ADD SI, <span class="number">2</span></span><br><span class="line">    Loop Lp</span><br><span class="line">;--------结束输入，换行---------------</span><br><span class="line">    CALL CRLF</span><br><span class="line">    MOV DX, OFFSET string_3 ;<span class="string">&#x27;The array you have input is:&#x27;</span></span><br><span class="line">    MOV AH, <span class="number">9</span>               ;首地址 DS:DX </span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line"> ;-------输出 ----------------   </span><br><span class="line">    MOV CX, <span class="number">10</span></span><br><span class="line">    MOV DI, <span class="number">0</span></span><br><span class="line">Again:</span><br><span class="line">    CALL Print</span><br><span class="line">    CALL Space</span><br><span class="line">    ADD DI , <span class="number">2</span></span><br><span class="line">    Loop Again</span><br><span class="line">;<span class="comment">/******************************/</span></span><br><span class="line">;----------Sort-----------</span><br><span class="line">    MOV CX, <span class="number">9</span></span><br><span class="line">    MOV DI, <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">FOR1:</span><br><span class="line">    CALL Sort</span><br><span class="line">    ADD DI, <span class="number">2</span></span><br><span class="line">    LOOP FOR1</span><br><span class="line"></span><br><span class="line">    CALL CRLF</span><br><span class="line">    MOV DX, OFFSET string_4 ;<span class="string">&#x27;After Sort the num is:&#x27;</span></span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line"></span><br><span class="line">    MOV CX, <span class="number">10</span></span><br><span class="line">    MOV DI, <span class="number">0</span></span><br><span class="line">FOR2:</span><br><span class="line">    CALL Print</span><br><span class="line">    CALL Space</span><br><span class="line">    ADD DI , <span class="number">2</span></span><br><span class="line">    LOOP FOR2</span><br><span class="line">    CALL CRLF</span><br><span class="line">;-------求和输出---------------------    </span><br><span class="line">    MOV DX, OFFSET massege;</span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line"></span><br><span class="line">    CALL Get_sum</span><br><span class="line">    MOV DI, <span class="number">0</span></span><br><span class="line">    CALL Print</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">EXIT:</span><br><span class="line">    MOV AH, <span class="number">4</span>CH</span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">;<span class="comment">/************子程序调用****************/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">;---------输入函数（单数字输入）------------</span><br><span class="line">Input PROC Near</span><br><span class="line">    push AX</span><br><span class="line">    push BX</span><br><span class="line">    push CX</span><br><span class="line">    push DX</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    MOV BX, <span class="number">0</span></span><br><span class="line">    CLC</span><br><span class="line">    MOV DX, <span class="number">0</span></span><br><span class="line">;----------输入数字--------------</span><br><span class="line">    Lp_0:</span><br><span class="line">        MOV AH, <span class="number">1</span></span><br><span class="line">        INT <span class="number">21</span>H</span><br><span class="line">        CMP AL, <span class="number">20</span>H ;空格</span><br><span class="line">        JE L_CRLF</span><br><span class="line"></span><br><span class="line">;-----   x belong to [<span class="number">0</span>,<span class="number">9</span>]   ----------        </span><br><span class="line">        SUB AL, <span class="number">30</span>H ; ASCII -&gt; <span class="type">int</span></span><br><span class="line">        JL L_ERROR  </span><br><span class="line">        CMP AL, <span class="number">9</span></span><br><span class="line">        JG L_ERROR</span><br><span class="line">;-------  <span class="built_in">string</span> -&gt; <span class="type">int</span>   -----------</span><br><span class="line">        MOV AH, <span class="number">0</span>   ;将 AL扩展成 AX</span><br><span class="line">        XCHG AX, BX ;保护 AX值</span><br><span class="line">        MOV CX, <span class="number">10</span></span><br><span class="line">        MUL CX      ; bx *= <span class="number">10</span></span><br><span class="line">        ADD AX , BX</span><br><span class="line">        JC L_ERROR  ; OVERFLOW处理</span><br><span class="line">        XCHG AX, BX </span><br><span class="line">        JMP Lp_0</span><br><span class="line">    L_ERROR:</span><br><span class="line">        MOV DX, <span class="number">0</span></span><br><span class="line">        MOV BX, <span class="number">0</span></span><br><span class="line">        CALL CRLF   ; 换行        </span><br><span class="line">        CALL ERROR  ; 输出错误提示</span><br><span class="line">        JMP Lp_0</span><br><span class="line">    L_CRLF:         ; 以换行作为一个数的结束标志</span><br><span class="line">        MOV DX, <span class="number">0</span></span><br><span class="line">        MOV DATA[SI], BX ;</span><br><span class="line">        POP DX</span><br><span class="line">        POP CX</span><br><span class="line">        POP BX</span><br><span class="line">        POP AX</span><br><span class="line">        RET</span><br><span class="line">        Input ENDP</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">;----换行子函数（一个数输入完毕）-------</span><br><span class="line">CRLF PROC Near</span><br><span class="line">    push AX</span><br><span class="line">    push DX</span><br><span class="line">    MOV DL, <span class="number">0</span>ah</span><br><span class="line">    MOV AH, <span class="number">2</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line">    pop DX</span><br><span class="line">    pop AX</span><br><span class="line">    RET</span><br><span class="line">    CRLF ENDP</span><br><span class="line">;---------空格-----------</span><br><span class="line">Space PROC Near</span><br><span class="line">    push AX</span><br><span class="line">    push DX</span><br><span class="line">    MOV DX, OFFSET string_5 ;<span class="string">&#x27; &#x27;</span></span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line">    pop DX</span><br><span class="line">    pop AX</span><br><span class="line">    RET </span><br><span class="line">    Space ENDP</span><br><span class="line">;----------错误提示-------------</span><br><span class="line">ERROR PROC Near</span><br><span class="line">    push BX</span><br><span class="line">    push DX</span><br><span class="line">    MOV DX, OFFSET string_2 ; ERROR: OVERFLOW! Please input again:</span><br><span class="line">    MOV AH, <span class="number">9</span></span><br><span class="line">    INT <span class="number">21</span>H</span><br><span class="line">    pop DX</span><br><span class="line">    pop BX</span><br><span class="line">    RET</span><br><span class="line">    ERROR ENDP</span><br><span class="line"></span><br><span class="line">;---------输出函数（单数字输出）-------------</span><br><span class="line">Print PROC Near</span><br><span class="line">    PUSH AX</span><br><span class="line">    PUSH BX</span><br><span class="line">	PUSH CX</span><br><span class="line">	PUSH DX </span><br><span class="line"></span><br><span class="line">    MOV CX, <span class="number">0</span></span><br><span class="line">    MOV BX, <span class="number">10</span></span><br><span class="line">    MOV AX, DATA[DI]</span><br><span class="line">    LAST:</span><br><span class="line">        MOV DX, <span class="number">0</span></span><br><span class="line">        DIV BX ; DIV商放AX，余数放入DX</span><br><span class="line">        PUSH DX</span><br><span class="line">        INC CX</span><br><span class="line">        CMP AX, <span class="number">0</span></span><br><span class="line">        JNZ LAST</span><br><span class="line">    AGE:</span><br><span class="line">        POP DX</span><br><span class="line">        OR DX, <span class="number">30</span>H</span><br><span class="line">        MOV AH, <span class="number">2</span></span><br><span class="line">        INT <span class="number">21</span>H</span><br><span class="line">        LOOP AGE</span><br><span class="line">        POP  DX</span><br><span class="line">        POP  CX</span><br><span class="line">	    POP  BX</span><br><span class="line">	    POP  AX</span><br><span class="line">	    RET</span><br><span class="line">        Print ENDP</span><br><span class="line"></span><br><span class="line">;---------SORT---------------------</span><br><span class="line">SORT PROC NEAR</span><br><span class="line">    PUSH BX</span><br><span class="line">    PUSH DX</span><br><span class="line">    MOV  SI,DI</span><br><span class="line">LOOP1:</span><br><span class="line">    ADD  SI,<span class="number">2</span>  </span><br><span class="line">    MOV  BX,DATA[DI]</span><br><span class="line">    CMP  BX,DATA[SI]</span><br><span class="line">    JA   CHANGE</span><br><span class="line">    JMP  NEXT</span><br><span class="line">CHANGE:    </span><br><span class="line">    MOV  DX,DATA[SI]</span><br><span class="line">    MOV  DATA[DI],DX</span><br><span class="line">    MOV  DATA[SI],BX </span><br><span class="line">NEXT:</span><br><span class="line">    CMP SI,<span class="number">18</span></span><br><span class="line">    JL   LOOP1</span><br><span class="line">    POP  DX</span><br><span class="line">    POP  BX</span><br><span class="line">    RET</span><br><span class="line">    SORT ENDP   </span><br><span class="line">;-------SUM-------------</span><br><span class="line">Get_sum PROC NEAR</span><br><span class="line">    PUSH BX</span><br><span class="line">    PUSH CX</span><br><span class="line"></span><br><span class="line">    MOV BX, <span class="number">0</span></span><br><span class="line">    MOV CX , <span class="number">9</span></span><br><span class="line">    MOV DI, <span class="number">2</span></span><br><span class="line">LOP1:</span><br><span class="line">    MOV BX, DATA[<span class="number">0</span>]</span><br><span class="line">    ADD BX, DATA[DI]</span><br><span class="line">    MOV DATA[<span class="number">0</span>], BX</span><br><span class="line">    ADD DI , <span class="number">2</span></span><br><span class="line">    LOOP LOP1</span><br><span class="line">    POP CX</span><br><span class="line">    POP BX</span><br><span class="line">    RET</span><br><span class="line">    Get_sum ENDP</span><br><span class="line"></span><br><span class="line">CODES ENDS</span><br><span class="line">    END START</span><br></pre></td></tr></table></figure>
+<h3 id="正确运行时截图">正确运行时截图</h3>
+<p><img
+src="https://gitee.com/relifes/image/raw/master/img/20220305181322.png" /></p>
+<h3 id="错误输入时截图">错误输入时截图</h3>
+<p><img
+src="https://gitee.com/relifes/image/raw/master/img/20220305180619.png" /></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>鲁明翰
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://relifes.github.io/posts/ASM-SORT/" title="汇编排序">https://relifes.github.io/posts/ASM-SORT/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/Knapsack/" rel="prev" title="背包问题">
+                  <i class="fa fa-chevron-left"></i> 背包问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline-comments"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">鲁明翰</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-server-bice.vercel.app","placeholder":"请文明评论呀","avatar":"mm","pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"meta":["nick","mail","link"],"libUrl":"https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js","el":"#waline-comments","path":"/posts/ASM-SORT/"}</script>
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() => 
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => {
+    new Waline(CONFIG.waline);
+  });
+});
+</script>
+</body>
+</html>
