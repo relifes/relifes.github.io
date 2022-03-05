@@ -18,10 +18,10 @@
   --btn-default-hover-bg: #222;
   --btn-default-hover-color: #fff;
   --btn-default-hover-border-color: #222;
-  --highlight-background: #fff;
-  --highlight-foreground: #373b41;
-  --highlight-gutter-background: #ebebec;
-  --highlight-gutter-foreground: #4b4e54;
+  --highlight-background: #f4ecec;
+  --highlight-foreground: #585050;
+  --highlight-gutter-background: #e4dcdc;
+  --highlight-gutter-foreground: #675f5f;
   color-scheme: light;
 }
 html {
@@ -363,12 +363,12 @@ td {
   transform: rotate(-45deg);
 }
 /*!
-  Theme: Google Light
-  Author: Seth Wright (http://sethawright.com)
+  Theme: Atelier Plateau Light
+  Author: Bram de Haan (http://atelierbramdehaan.nl)
   License: ~ MIT (or more permissive) [via base16-schemes-source]
   Maintainer: @highlightjs/core-team
   Version: 2021.09.0
-*/pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{color:#373b41;background:#fff}.hljs ::selection,.hljs::selection{background-color:#c5c8c6;color:#373b41}.hljs-comment{color:#b4b7b4}.hljs-tag{color:#969896}.hljs-operator,.hljs-punctuation,.hljs-subst{color:#373b41}.hljs-operator{opacity:.7}.hljs-bullet,.hljs-deletion,.hljs-name,.hljs-selector-tag,.hljs-template-variable,.hljs-variable{color:#cc342b}.hljs-attr,.hljs-link,.hljs-literal,.hljs-number,.hljs-symbol,.hljs-variable.constant_{color:#f96a38}.hljs-class .hljs-title,.hljs-title,.hljs-title.class_{color:#fba922}.hljs-strong{font-weight:700;color:#fba922}.hljs-addition,.hljs-code,.hljs-string,.hljs-title.class_.inherited__{color:#198844}.hljs-attribute,.hljs-built_in,.hljs-doctag,.hljs-function .hljs-title,.hljs-keyword.hljs-atrule,.hljs-quote,.hljs-regexp,.hljs-section,.hljs-title.function_,.ruby .hljs-property{color:#3971ed}.diff .hljs-meta,.hljs-keyword,.hljs-template-tag,.hljs-type{color:#a36ac7}.hljs-emphasis{color:#a36ac7;font-style:italic}.hljs-meta,.hljs-meta .hljs-keyword,.hljs-meta .hljs-string{color:#3971ed}.hljs-meta .hljs-keyword,.hljs-meta-keyword{font-weight:700}
+*/pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{color:#585050;background:#f4ecec}.hljs ::selection,.hljs::selection{background-color:#8a8585;color:#585050}.hljs-comment{color:#7e7777}.hljs-tag{color:#655d5d}.hljs-operator,.hljs-punctuation,.hljs-subst{color:#585050}.hljs-operator{opacity:.7}.hljs-bullet,.hljs-deletion,.hljs-name,.hljs-selector-tag,.hljs-template-variable,.hljs-variable{color:#ca4949}.hljs-attr,.hljs-link,.hljs-literal,.hljs-number,.hljs-symbol,.hljs-variable.constant_{color:#b45a3c}.hljs-class .hljs-title,.hljs-title,.hljs-title.class_{color:#a06e3b}.hljs-strong{font-weight:700;color:#a06e3b}.hljs-addition,.hljs-code,.hljs-string,.hljs-title.class_.inherited__{color:#4b8b8b}.hljs-built_in,.hljs-doctag,.hljs-keyword.hljs-atrule,.hljs-quote,.hljs-regexp{color:#5485b6}.hljs-attribute,.hljs-function .hljs-title,.hljs-section,.hljs-title.function_,.ruby .hljs-property{color:#7272ca}.diff .hljs-meta,.hljs-keyword,.hljs-template-tag,.hljs-type{color:#8464c4}.hljs-emphasis{color:#8464c4;font-style:italic}.hljs-meta,.hljs-meta .hljs-keyword,.hljs-meta .hljs-string{color:#bd5187}.hljs-meta .hljs-keyword,.hljs-meta-keyword{font-weight:700}
 code,
 kbd,
 figure.highlight,
