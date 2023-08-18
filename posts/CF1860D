@@ -21,28 +21,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"relifes.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":13},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="题意 按时间顺序给了 \(n(1\le n \le 5\cdot 10^5)\) 个国王的名字，找这样的国王排列的国王个数最多有多少个：  国王的名字必须是按照时间的先后顺序排列 前一个国王的名字的尾字母必须和后一个国王的名字首字母相同 第一个国王的首字母必须和最后一个国王的尾字母相同">
+    <meta name="description" content="题意 原题链接 对于 \(01\) 串，找到最少的交换次数，使得  子序列 \(01\) 的数量等于子序列 \(10\) 的数量  \(3 \le |s| \le 100\)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CF191A Dynasty Puzzles">
-<meta property="og:url" content="https://relifes.github.io/posts/CodeForces-191A">
+<meta property="og:title" content="CF1860D Balanced String">
+<meta property="og:url" content="https://relifes.github.io/posts/CF1860D">
 <meta property="og:site_name" content="Relifes">
-<meta property="og:description" content="题意 按时间顺序给了 \(n(1\le n \le 5\cdot 10^5)\) 个国王的名字，找这样的国王排列的国王个数最多有多少个：  国王的名字必须是按照时间的先后顺序排列 前一个国王的名字的尾字母必须和后一个国王的名字首字母相同 第一个国王的首字母必须和最后一个国王的尾字母相同">
+<meta property="og:description" content="题意 原题链接 对于 \(01\) 串，找到最少的交换次数，使得  子序列 \(01\) 的数量等于子序列 \(10\) 的数量  \(3 \le |s| \le 100\)">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-12T16:41:37.000Z">
-<meta property="article:modified_time" content="2023-08-18T18:31:02.227Z">
+<meta property="article:published_time" content="2023-08-18T16:52:38.000Z">
+<meta property="article:modified_time" content="2023-08-18T18:51:34.034Z">
 <meta property="article:author" content="鲁明翰">
 <meta property="article:tag" content="线性DP">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://relifes.github.io/posts/CodeForces-191A">
+<link rel="canonical" href="https://relifes.github.io/posts/CF1860D">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://relifes.github.io/posts/CodeForces-191A","path":"/posts/CodeForces-191A","title":"CF191A Dynasty Puzzles"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://relifes.github.io/posts/CF1860D","path":"/posts/CF1860D","title":"CF1860D Balanced String"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>CF191A Dynasty Puzzles | Relifes</title>
+<title>CF1860D Balanced String | Relifes</title>
   
 
 
@@ -122,7 +122,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E6%84%8F"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E6%84%8F"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E8%A1%A8%E7%A4%BA%E4%B8%8E%E7%8A%B6%E6%80%81%E8%AE%A1%E7%AE%97"><span class="nav-number">2.1.</span> <span class="nav-text">状态表示与状态计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -198,7 +198,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://relifes.github.io/posts/CodeForces-191A">
+    <link itemprop="mainEntityOfPage" href="https://relifes.github.io/posts/CF1860D">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1.jpg">
@@ -211,12 +211,12 @@
     </span>
     
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="CF191A Dynasty Puzzles | Relifes">
+      <meta itemprop="name" content="CF1860D Balanced String | Relifes">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CF191A Dynasty Puzzles
+          CF1860D Balanced String
         </h1>
 
         <div class="post-meta-container">
@@ -226,15 +226,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2023-08-13 00:41:37" itemprop="dateCreated datePublished" datetime="2023-08-13T00:41:37+08:00">2023-08-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-08-19 02:31:02" itemprop="dateModified" datetime="2023-08-19T02:31:02+08:00">2023-08-19</time>
+      <time title="创建时间：2023-08-19 00:52:38 / 修改时间：02:51:34" itemprop="dateCreated datePublished" datetime="2023-08-19T00:52:38+08:00">2023-08-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -255,8 +249,8 @@
     </span>
     <span class="post-meta-item-text">Waline：</span>
   
-    <a title="waline" href="/posts/CodeForces-191A#waline-comments" itemprop="discussionUrl">
-      <span class="post-comments-count waline-comment-count" id="/posts/CodeForces-191A" data-xid="/posts/CodeForces-191A" itemprop="commentCount"></span>
+    <a title="waline" href="/posts/CF1860D#waline-comments" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" id="/posts/CF1860D" data-xid="/posts/CF1860D" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -267,7 +261,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>886</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -286,34 +280,93 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2 id="题意">题意</h2>
-<p>按时间顺序给了 <span class="math inline">\(n(1\le n \le 5\cdot
-10^5)\)</span>
-个国王的名字，找这样的国王排列的国王个数最多有多少个：</p>
-<ol type="1">
-<li>国王的名字必须是按照时间的先后顺序排列</li>
-<li>前一个国王的名字的尾字母必须和后一个国王的名字首字母相同</li>
-<li>第一个国王的首字母必须和最后一个国王的尾字母相同</li>
-</ol>
+<p><a
+target="_blank" rel="noopener" href="https://codeforces.com/problemset/problem/1860/D">原题链接</a></p>
+<p>对于 <span class="math inline">\(01\)</span>
+串，找到最少的交换次数，使得</p>
+<ul>
+<li>子序列 <span class="math inline">\(01\)</span> 的数量等于子序列
+<span class="math inline">\(10\)</span> 的数量</li>
+</ul>
+<p><span class="math inline">\(3 \le |s| \le 100\)</span></p>
 <span id="more"></span>
 <h2 id="分析">分析</h2>
-<p><strong>状态表示：</strong></p>
+<p>长度为2的子序列一共4种情况，分别为 <span
+class="math inline">\(00,01,10,11\)</span>。</p>
 <ul>
-<li><strong>集合：</strong><span class="math inline">\(f(i,j)\)</span>
-表示所有以字符 <code>i</code> 开始， 以字符 <code>j</code>
-结束，符合上述条件的字符串</li>
-<li><strong>属性：</strong>长度的最大值</li>
+<li>在进行交换时，无论如何 <span class="math inline">\(00\)</span> 和
+<span class="math inline">\(11\)</span>
+的子序列个数是不变的，同时四种子序列的总数也不变。</li>
+<li>则 <span class="math inline">\(10\)</span> 和 <span
+class="math inline">\(01\)</span> 的子序列总和不变，当我们让 <span
+class="math inline">\(10\)</span> 和 <span
+class="math inline">\(01\)</span>
+的数量都为它们总和的一半时，才会相等。</li>
 </ul>
-<p><strong>状态计算：</strong> <span class="math display">\[
-f(i,j)=\max \left( \sum_{k=a}^{z}f(i, k) + f(k, j)\right)
-\]</span> 若此时输入了一个新的字符串 <code>S = a.....b</code>,
-以a开头，b结尾。</p>
-<p>如果之前存在一个以 a 结尾的 <span class="math inline">\(f(i,
-a)\)</span> ，则 <span class="math inline">\(f(i, b) = \max
-\left(f(i,b), f(i,a)+len \right)\)</span></p>
-<p>最后特判一下，若输入的字符串长度 len 比转移来的 <span
-class="math inline">\(f(a,b)\)</span> 还要长的话，直接更新其值</p>
+<p>考虑每一位 <code>s[i] = 1</code> 对子序列的贡献，若当前位为1的话，
+那么 <span class="math inline">\(01\)</span> 和 <span
+class="math inline">\(11\)</span> 的子序列个数应该都增加 <span
+class="math inline">\(i\)</span> ，则 <span
+class="math inline">\(01\)</span> 和 <span
+class="math inline">\(11\)</span> 的子序列个数可求</p>
+<p>为了方便表示，记：</p>
+<ul>
+<li><span class="math inline">\(c_0\)</span> 为 <span
+class="math inline">\(0\)</span> 的个数</li>
+<li><span class="math inline">\(c_1\)</span> 为 <span
+class="math inline">\(1\)</span> 的个数</li>
+<li><span class="math inline">\(sum(n)\)</span> 为 n 的子序列个数-&gt;
+<span class="math inline">\(sum(n) = \dfrac{n(n-1)}{2}\)</span></li>
+<li><span class="math inline">\(need\)</span> 为最后所需要的 <span
+class="math inline">\(01\)</span> 或 <span
+class="math inline">\(10\)</span> 的数量，则有如下推导</li>
+</ul>
+<p><span class="math display">\[
+sum(n) = sum(00)+sum(11)+sum(01)+sum(10)
+\]</span></p>
+<p><span class="math display">\[
+sum(n) = sum(00)+sum(11)+2\cdot need
+\]</span></p>
+<p><span class="math display">\[
+need = \dfrac{sum(n)-sum(00)-sum(11)}{2}
+\]</span></p>
+<p>但是我们对于每个位置是统计 <span class="math inline">\(sum(01) +
+sum(11)\)</span> ，故需要一步转化 <span class="math display">\[
+sum(01)+sum(11) =\dfrac{sum(n)-sum(00)-sum(11)}{2}+sum(11)
+\]</span></p>
+<p><span class="math display">\[
+k = \dfrac{sum(n)-sum(00)+sum(11)}{2}, k=sum(01)+sum(11)
+\]</span></p>
+<p>此时我们就将原来的need转换为k了：既当 <span
+class="math inline">\(sum(01)+sum(11)=k\)</span>时，<span
+class="math inline">\(sum(01)=need\)</span></p>
+<h3 id="状态表示与状态计算">状态表示与状态计算</h3>
+<p>令 <span class="math inline">\(f[i][j][k]\)</span> 表示前 <span
+class="math inline">\(i\)</span> 个位置有 <span
+class="math inline">\(j\)</span> 个 <span
+class="math inline">\(1\)</span> 且此时的 <span
+class="math inline">\(01\)</span> 和 <span
+class="math inline">\(11\)</span> 的子序列总和为 <span
+class="math inline">\(k\)</span></p>
+<p>转移方程：</p>
+<ul>
+<li>若当前 <span class="math inline">\(i\)</span> 不放 <span
+class="math inline">\(1\)</span>：<span
+class="math inline">\(f[i][j][k]=f[i-1][j][k]\)</span></li>
+<li>若当前 <span class="math inline">\(i\)</span> 放 <span
+class="math inline">\(1\)</span> 且原序列中此处为 <span
+class="math inline">\(1\)</span>：<span
+class="math inline">\(f[i][j][k]=f[i-1][j-1][k-i]\)</span></li>
+<li>若当前 <span class="math inline">\(i\)</span> 放 <span
+class="math inline">\(1\)</span> 且原序列中此处<strong>不为</strong>
+<span class="math inline">\(1\)</span>：<span
+class="math inline">\(f[i][j][k]=f[i-1][j-1][k-i]+1\)</span>（swap)</li>
+</ul>
+<p>类似与 01背包问题，这里我们也可以优化一维</p>
+<p>边界：<span class="math inline">\(f[0][0] = 0\)</span></p>
+<p>答案：<span class="math inline">\(f[c1][need]\)</span></p>
 <h2 id="代码">代码</h2>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> f[N][N];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    cin &gt;&gt; n;</span><br><span class="line">    string s;</span><br><span class="line">    <span class="keyword">while</span> (n --)</span><br><span class="line">    &#123;</span><br><span class="line">    	cin &gt;&gt; s;</span><br><span class="line">    	<span class="type">int</span> len = s.<span class="built_in">size</span>();</span><br><span class="line">    	<span class="type">int</span> a = s[<span class="number">0</span>]-<span class="string">&#x27;a&#x27;</span>+<span class="number">1</span>, b = s[len<span class="number">-1</span>]-<span class="string">&#x27;a&#x27;</span>+<span class="number">1</span>;</span><br><span class="line">    	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">26</span>; i ++) &#123;</span><br><span class="line">    		<span class="keyword">if</span> (f[i][a]) </span><br><span class="line">    			f[i][b] = <span class="built_in">max</span>(f[i][b], f[i][a] + len);</span><br><span class="line">    	&#125;</span><br><span class="line">    	<span class="keyword">if</span> (f[a][b] &lt; len) f[a][b] = len;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">26</span>; i ++) &#123;</span><br><span class="line">    	ans = <span class="built_in">max</span>(ans, f[i][i]);</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; ans;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">110</span>, M = N * (N - <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> f[N][M];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    string s;</span><br><span class="line">    cin &gt;&gt; s;</span><br><span class="line">    <span class="type">int</span> n = s.<span class="built_in">size</span>();</span><br><span class="line">    <span class="type">int</span> c1 = <span class="built_in">count</span>(s.<span class="built_in">begin</span>(), s.<span class="built_in">end</span>(), <span class="string">&#x27;1&#x27;</span>), c0 = n - c1;</span><br><span class="line">    <span class="type">int</span> need = (n * (n - <span class="number">1</span>) / <span class="number">2</span> - c0 * (c0 - <span class="number">1</span>) / <span class="number">2</span> + c1 * (c1 - <span class="number">1</span>) / <span class="number">2</span>) / <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">memset</span>(f, <span class="number">0x3f</span>, <span class="keyword">sizeof</span> f);</span><br><span class="line">    f[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = c1; j &gt;= <span class="number">1</span>; j--) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> k = i; k &lt;= need; k++) &#123;</span><br><span class="line">                f[j][k] = <span class="built_in">min</span>(f[j][k], f[j - <span class="number">1</span>][k - i] + (s[i] == <span class="string">&#x27;0&#x27;</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; f[c1][need] &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -331,7 +384,7 @@ class="math inline">\(f(a,b)\)</span> 还要长的话，直接更新其值</p>
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://relifes.github.io/posts/CodeForces-191A" title="CF191A Dynasty Puzzles">https://relifes.github.io/posts/CodeForces-191A</a>
+      <a href="https://relifes.github.io/posts/CF1860D" title="CF1860D Balanced String">https://relifes.github.io/posts/CF1860D</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -347,14 +400,11 @@ class="math inline">\(f(a,b)\)</span> 还要长的话，直接更新其值</p>
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/posts/Tools-FarManager/" rel="prev" title="Far Manager 配置">
-                  <i class="fa fa-chevron-left"></i> Far Manager 配置
+                <a href="/posts/CodeForces-191A" rel="prev" title="CF191A Dynasty Puzzles">
+                  <i class="fa fa-chevron-left"></i> CF191A Dynasty Puzzles
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/posts/CF1860D" rel="next" title="CF1860D Balanced String">
-                  CF1860D Balanced String <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -429,7 +479,7 @@ class="math inline">\(f(a,b)\)</span> 还要长的话，直接更新其值</p>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
-<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-server-bice.vercel.app","placeholder":"请文明评论呀","avatar":"mm","pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"meta":["nick","mail","link"],"libUrl":"https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js","el":"#waline-comments","path":"/posts/CodeForces-191A"}</script>
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-server-bice.vercel.app","placeholder":"请文明评论呀","avatar":"mm","pageSize":10,"visitor":false,"comment_count":true,"requiredFields":[],"meta":["nick","mail","link"],"libUrl":"https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js","el":"#waline-comments","path":"/posts/CF1860D"}</script>
 <script>
 document.addEventListener('page:loaded', () => {
   NexT.utils.loadComments(CONFIG.waline.el).then(() => 
